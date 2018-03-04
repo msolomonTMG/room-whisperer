@@ -1,0 +1,24 @@
+{
+   "browser_action": {
+      "default_icon": "icons/icon.png",
+      "default_popup": "popup.html"
+   },
+   "content_security_policy": "script-src 'self' 'unsafe-eval' https://apis.google.com; object-src 'self'",
+   "description": "Booking a room at this office was impossible... until now.",
+   "icons": {
+      "128": "icons/icon-128.png",
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAomrcRGEQY9Cd50bqCttSefwiaVRwxynCTZiZKjxnTl+q/m3jqPeFTSSfC/0HFn0Rbio/iWPNFyt1JUGU1z8/+c8/KWumgxpU+GRKhDLAxTMp6gU8Y2NyimwjZmtqFs02znp10zI7zMk8dfmS1CAIFAdAPZDxNtsLuO6WNrGeCOiqjuD57hr1IMkJ7WAPwpjitfkHWbutxM7y1/h30rLi0UW4D93aOkGZG5gD3vQZPJQme0oiuVz+YS/UAWDB45uVEEP8l1CXnUwYOe0Zn/ZnhNCswLYajuyNOCdqfCa21CzdcmvSq8zEUvtGsCGap+mjbD13LinRY7kFDtyL+tZRVwIDAQAB",
+   "manifest_version": 2,
+   "name": "Room Whisperer",
+   "oauth2": {
+      "client_id": "826186761919-hibt42ul8mkqn7l43mbmcrtjd0g7vq4u.apps.googleusercontent.com",
+      "scopes": [ "https://www.googleapis.com/auth/calendar" ]
+   },
+   "permissions": [ "storage", "activeTab", "identity", "https://ajax.googleapis.com/" ],
+   "short_name": "Rooms",
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.3.5"
+}
