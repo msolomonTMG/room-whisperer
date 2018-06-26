@@ -15,7 +15,7 @@
    "name": "Room Whisperer",
    "oauth2": {
       "client_id": "826186761919-hibt42ul8mkqn7l43mbmcrtjd0g7vq4u.apps.googleusercontent.com",
-      "scopes": [ "https://www.googleapis.com/auth/calendar" ]
+      "scopes": [ "https://www.googleapis.com/auth/calendar", "email", "profile"]
    },
    "permissions": [ "storage", "activeTab", "identity", "https://ajax.googleapis.com/" ],
    "short_name": "Rooms",

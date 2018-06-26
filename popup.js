@@ -1,17 +1,96 @@
 var CLIENT_ID = chrome.runtime.getManifest().oauth2.client_id;
-var SCOPES = ["https://www.googleapis.com/auth/calendar"];
+var SCOPES = ["https://www.googleapis.com/auth/calendar","email","profile"];
+
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyAd2ODJKl1oZJZanuIW9tQI-KoTDkJq99U",
+  authDomain: "thrillist-rooms.firebaseapp.com",
+  databaseURL: "https://thrillist-rooms.firebaseio.com",
+  projectId: "thrillist-rooms",
+  storageBucket: "",
+  messagingSenderId: "826186761919",
+  clientId: "826186761919-3hr8dap813v1vlsddomfdf5mes0teutb.apps.googleusercontent.com",
+  scopes: SCOPES,
+  discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
+}
+firebase.initializeApp(config);
+
 /**
  * Check if current user has authorized this application.
  */
+$('#reload').on('click', function(e) {
+  checkAuth()
+})
 function checkAuth() {
   $('#loading-wrapper').show();
-  gapi.auth.authorize(
-    {
-      'client_id': CLIENT_ID,
-      'scope': SCOPES.join(' '),
-      'immediate': true
-    }, handleAuthResult);
+  chrome.identity.getAuthToken({
+    interactive: true,
+    scopes: SCOPES
+  }, function (token) {
+    console.log('Chrome Identity Token')
+    console.log(token)
+    
+    var credential = firebase.auth.GoogleAuthProvider.credential(null, token);
+    console.log('Firebase Credential', credential)
+    firebase.auth().signInAndRetrieveDataWithCredential(credential)
+    .then(function(credentials) {
+      console.log('credentials', credentials)
+      gapi.auth.setToken({access_token: token})
+      loadCalendarApi()
+      
+      // gapi.client.init({
+      //   apiKey: config.apiKey,
+      //   clientId: config.clientId,
+      //   discoveryDocs: config.discoveryDocs,
+      //   scope: config.scopes.join(' ')
+      // })
+      // .then(function() {
+      //   if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      //     console.log('all good!')
+      //     console.log(user)
+      //   } else {
+      //     //firebase.auth().signOut(); // Something went wrong, sign out
+      //     console.log('something went wrong')
+      //   }
+      // })
+    })
+    .catch(function(err) {
+      console.log("error!", err)
+    })
+    
+    console.log(firebase.User)
+    // gapi.client.setToken({
+    //   access_token: token
+    // })
+  })
+  // gapi.auth2.authorize(
+  //   {
+  //     'client_id': CLIENT_ID,
+  //     'scope': SCOPES.join(' '),
+  //     'immediate': true
+  //   }, handleAuthResult);
 }
+
+// firebase.auth().onAuthStateChanged(function(user) {
+//   console.log('auth state changed!')
+//   if(user) {
+//     gapi.client.init({
+//       apiKey: config.apiKey,
+//       clientId: config.clientId,
+//       discoveryDocs: config.discoveryDocs,
+//       scope: config.scopes.join(' ')
+//     })
+//     .then(function() {
+//       if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+//         console.log('all good!')
+//         console.log(user)
+//       } else {
+//         //firebase.auth().signOut(); // Something went wrong, sign out
+//         console.log('something went wrong')
+//       }
+//     })
+//   }
+// })
 
 /**
  * Handle response from authorization server.
@@ -19,7 +98,6 @@ function checkAuth() {
  * @param {Object} authResult Authorization result.
  */
 function handleAuthResult(authResult) {
-  console.log(authResult)
   if (authResult && !authResult.error) {
     // Hide auth UI, then load client library.
     loadCalendarApi();
@@ -47,7 +125,7 @@ function handleAuthClick(event) {
  * Load Google Calendar client library. List upcoming events
  * once client library is loaded.
  */
-function loadCalendarApi() {
+function loadCalendarApi(token) {
   gapi.client.load('calendar', 'v3', listUpcomingEvents);
 }
 
