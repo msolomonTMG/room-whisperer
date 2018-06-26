@@ -1,3 +1,3 @@
-Turn google meetings into JIRA worklogs
+Room Whisperer
 ===========
-A chrome extension that enables you to create a JIRA worklog for the meetings on your google calendar
+Booking a conference room in this office was impossible... until now
